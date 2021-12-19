@@ -1,30 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
-import Login from './components/Auth/Login'
-import Register from './components/Auth/Register'
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-/* import 'semantic-ui-css/semantic.min.css'; */
+import { BrowserRouter as Router } from 'react-router-dom';
+//import firebase from './firebase'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux';
+import { composeWithDevTools } from  'redux-devtools-extension';
+import rootReducer from './reducers';
 
+import Root from './components/mainComponent';
 
+const store = createStore(rootReducer, composeWithDevTools());
 
-const Root = () => {
-  return (
-  <Router>
-    <Routes>
-      <Route exact path="/" element={<App />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/register" element={<Register />} />
-    </Routes>
-  </Router>
-  )}
 
 
 ReactDOM.render(
-/*   <React.StrictMode> */
-    <Root />,
-/*   </React.StrictMode>, */
+  <Provider store={store}>
+    <Router>
+      <Root />
+    </Router>
+    </Provider>,
   document.getElementById('root')
 );
 
