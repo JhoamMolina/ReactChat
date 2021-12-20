@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Modal, Form, Input, Button } from 'semantic-ui-react';
-import { getDatabase,set, ref, child, push, onChildAdded } from "firebase/database";
+import { getDatabase,set, ref, child, push, onChildAdded, off } from "firebase/database";
 import { connect } from 'react-redux';
 import { setCurrentChannel } from '../../actions';
 import firebase from '../../firebase'
@@ -22,6 +22,16 @@ class Channels extends Component {
     componentDidMount() {
         this.addListeners();
     }
+
+    componentWillUnmount() {
+        this.removeListeners();
+      }
+
+
+    removeListeners = () => {
+        const channelRef = ref(database, 'channels');
+        off(channelRef);
+    };
 
     addListeners = () => {
         let loadedChannels = [];
