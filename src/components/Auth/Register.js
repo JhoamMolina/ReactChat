@@ -5,6 +5,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile  } from "firebas
 import md5 from 'md5'
 import firebase from '../../firebase'
 import { getDatabase, ref , set} from "firebase/database";
+import { connect } from 'react-redux';
+import { setLogin } from '../../actions';
 
 const database = getDatabase();
 const auth = getAuth();
@@ -18,7 +20,7 @@ class Register extends Component {
         passwordConfirmation: '',
         errors: [],
         loading: false,
-    }
+    }   
 
     isFormValid = () => {
         let errors = [];
@@ -82,7 +84,7 @@ class Register extends Component {
                 })
                 .catch(err => {
                     console.log(err);
-                    this.setState({ erros: this.state.errors.concat(err), loading: false});
+                    this.setState({ errors: this.state.errors.concat(err), loading: false});
                 })
 
             })
@@ -105,7 +107,9 @@ class Register extends Component {
     }
 
 
-
+    handleChangeUrl = () => {
+        this.props.setLogin('login')
+    }
 
 
     render() {
@@ -113,11 +117,11 @@ class Register extends Component {
         const {username, email, password, passwordConfirmation, errors, loading } = this.state;
 
         return (
-            <Grid textAlign='center' verticalAlign='middle' className='app'>
+            <Grid textAlign='center' verticalAlign='middle' className='app' >
                 <Grid.Column style={{ maxWidth: 450}}>
                     <Header as="h1" icon color="orange" textAlign='center'>
                         <Icon name="puzzle piece" color="orange" />
-                        Register for DevChat
+                        Register for LRJ_CHAT
                     </Header>
                     <Form onSubmit={this.handleSubmit} size="large">
                         <Segment stacked>
@@ -147,7 +151,7 @@ class Register extends Component {
                             {this.displayErros(errors)}
                         </Message>
                     )}
-                    <Message>Already a user? <Link to="/login">Login</Link></Message>
+                    <Message>Already a user? <Link to="/login"><span onClick={this.handleChangeUrl}>Login</span></Link></Message>
 
                 </Grid.Column>
             </Grid>
@@ -155,4 +159,4 @@ class Register extends Component {
     }
 }
 
-export default Register;
+export default connect(null, {setLogin})(Register);

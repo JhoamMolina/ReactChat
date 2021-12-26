@@ -11,21 +11,26 @@ import Spinner from '../Spinner';
 
 let auth = getAuth();
 
-const Root = (props) => {
+const Root = () => {
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.user.isLoading) 
+  const loginauth = useSelector(state => state.register.register)
   useEffect(() => {    
      onAuthStateChanged(auth, (user) =>{
       if(user) {
         dispatch(setUser(user))
         navigate("/");
+      } else if(loginauth === 'register') {
+        navigate('/register');
+        dispatch(clearUser());
       } else {
         navigate('/login');
         dispatch(clearUser());
       }
     })
-   },[navigate, dispatch]) 
+   },[navigate, dispatch, loginauth]) 
 
   return isLoading ? <Spinner /> : (
       <Routes>
